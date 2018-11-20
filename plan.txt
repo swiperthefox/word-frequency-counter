@@ -1,0 +1,44 @@
+# UI
+
+- Main:
+  
+  [ADD] [MERGE] _____ [SEARCH] [EXPORT]
+  -------------------------------------
+  [ ] |Name|Chars|Words|Word(Unique)|Sentence|Level|
+  []  |中考 |350  |55   |40          |3       | 5   |
+
+- [ADD] document:
+
+  Name:__________
+  Content:                              [FROM FILE]
+  -------------------------------------------------
+  |                                               |
+  |                                               |
+  |                                               |
+  -------------------------------------------------
+  |Name|Chars|Words|Word(Unique)|Sentence|Level|
+  |中考 |350  |55   |40          |3       | 5   |
+
+                 [CANCEL] [OK]
+
+- [MERGE] Document
+  same as ADD document
+- [EXPORT]
+
+# DATA (* computed)
+- Main
+  document[],
+  search_text,
+  filteredDoc*
+- ADD
+  name,
+  content,
+  isAdd,
+  validatingError,
+  readingError,
+  stats*
+  
+# FUNCTION
+  - Exract text content from .txt, .doc, docx, .pdf files.
+  - Count chars, words and sentences of the chosen reading material, compute reading levels of it.
+  - Export stats to .csv file.
