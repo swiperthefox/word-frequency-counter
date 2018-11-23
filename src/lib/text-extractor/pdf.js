@@ -40,7 +40,6 @@ function getPageText (pageNum, PDFDocumentInstance) {
       // The main trick to obtain the text of the PDF page, use the getTextContent method
       pdfPage.getTextContent().then(function (textContent) {
         let textItems = textContent.items
-        console.log(textItems.length)
         let finalString = ''
 
         // Concatenate the string of the item to the final string
@@ -48,9 +47,9 @@ function getPageText (pageNum, PDFDocumentInstance) {
           let item = textItems[i]
           finalString += item.str + ' '
         }
-        console.log(finalString)
-        // Solve promise with the text retrieven from the page
+
         resolve(finalString)
+        // Solve promise with the text retrieven from the page
       })
     },
     reject

@@ -1,5 +1,6 @@
 <template>
   <div>
+    <router-link to="/adddoc">Add doc</router-link>
     <h3>词频统计</h3>
     <h4> Docx Content </h4>
     <div> {{ docxContent }} </div>
@@ -15,8 +16,8 @@
 </template>
 
 <script>
-import textExtractor from '../lib/text-extractor/textextractor'
-import textstats from '../lib/text-stats/textstats'
+import textExtractor from '../lib/text-extractor'
+import textstats from '../lib/text-stats'
 
 let data = {
   docxContent: '',
