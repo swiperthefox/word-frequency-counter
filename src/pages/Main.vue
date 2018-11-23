@@ -7,12 +7,16 @@
     <div> {{ docContent }} </div>
     <h4> PDF content </h4>
     <div> {{ pdfContent }} </div>
+    {{ JSON.stringify(stats) }}
+    <pre>
+    {{ stats.wc.exportCSV() }}
+    </pre>
   </div>
 </template>
 
 <script>
-import textExtractor from '../lib/textextractor.js'
-// import Vue from 'vue'
+import textExtractor from '../lib/text-extractor/textextractor'
+import textstats from '../lib/text-stats/textstats'
 
 let data = {
   docxContent: '',
@@ -21,7 +25,12 @@ let data = {
 }
 
 export default {
-  data: () => data
+  data: () => data,
+  computed: {
+    stats: function () {
+      return textstats(this.pdfContent)
+    }
+  }
 }
 
 for (let typ of [ 'doc', 'docx', 'pdf' ]) {

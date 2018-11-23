@@ -12,6 +12,7 @@
   },
   "dependencies": {},
   "devDependencies": {
+    "automated-readability": "^1.0.3",
     "babel-eslint": "^8.2.1",
     "chardet": "^0.7.0",
     "devtron": "^1.4.0",

@@ -1,6 +1,6 @@
-import pdfToText from './text-extractor/pdf.js'
-import docToText from './text-extractor/doc.js'
-import docxToText from './text-extractor/docx.js'
+import pdfToText from './pdf.js'
+import docToText from './doc.js'
+import docxToText from './docx.js'
 
 import chardet from 'chardet'
 const iconv = require('iconv-lite')

@@ -38,6 +38,12 @@ module.exports = function (ctx) {
             aliasFields: ['main']
           }
         })
+        cfg.module.rules.push({
+          test: /\.txt$/,
+          use: {
+            loader: 'raw-loader'
+          }
+        })
         cfg.output = {
           globalObject: 'this'
         }
