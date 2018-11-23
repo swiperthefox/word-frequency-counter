@@ -30,6 +30,17 @@ module.exports = function (ctx) {
           loader: 'eslint-loader',
           exclude: /node_modules/
         })
+        // workaround of iconv-lite's dynamic requiring problem
+        // see https://github.com/ashtuchkin/iconv-lite/issues/204
+        cfg.module.rules.push({
+          test: /node_modules[/\\](iconv-lite)[/\\].+/,
+          resolve: {
+            aliasFields: ['main']
+          }
+        })
+        cfg.output = {
+          globalObject: 'this'
+        }
       }
     },
     devServer: {
@@ -114,7 +125,7 @@ module.exports = function (ctx) {
       // id: 'org.cordova.quasar.app'
     },
     electron: {
-      // bundler: 'builder', // or 'packager'
+      bundler: 'builder', // or 'packager'
       extendWebpack (cfg) {
         // do something with Electron process Webpack cfg
       },
@@ -133,7 +144,7 @@ module.exports = function (ctx) {
       builder: {
         // https://www.electron.build/configuration/configuration
 
-        // appId: 'quasar-app'
+        appId: '词频统计'
       }
     }
   }
