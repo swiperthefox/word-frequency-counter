@@ -1,4 +1,5 @@
 // Configuration for your app
+const fs = require('fs')
 
 module.exports = function (ctx) {
   return {
@@ -24,6 +25,8 @@ module.exports = function (ctx) {
       // analyze: true,
       // extractCSS: false,
       extendWebpack (cfg) {
+        cfg.mode = 'development'
+        cfg.devtool = 'inline-sourcemap'
         cfg.module.rules.push({
           enforce: 'pre',
           test: /\.(js|vue)$/,
@@ -47,6 +50,7 @@ module.exports = function (ctx) {
         cfg.output = {
           globalObject: 'this'
         }
+        fs.writeFileSync('/tmp/webpack.cfg', JSON.stringify(cfg, null, 2))
       }
     },
     devServer: {
@@ -70,7 +74,8 @@ module.exports = function (ctx) {
         'QListHeader',
         'QItem',
         'QItemMain',
-        'QItemSide'
+        'QItemSide',
+        'QInput'
       ],
       directives: [
         'Ripple'

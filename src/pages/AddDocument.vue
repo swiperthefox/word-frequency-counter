@@ -34,8 +34,8 @@
       </div>
       <div v-if="docWarning" class="warning">{{ docWarning }}</div>
       <div>
-        <button @click='cancel'>取消</button>
-        <button @click='confirm'>确定</button>
+        <button @click.prevent='cancel'>取消</button>
+        <button @click.prevent='confirm'>确定</button>
       </div>
     </form>
   </div>
@@ -118,9 +118,13 @@ export default {
     }, // loadDocument
     cancel () {
       reset()
+      this.$router.push({path: '/'})
       console.log('cancel')
     },
     confirm () {
+      this.$store.dispatch('addDocument', this.doc)
+      this.$router.push({path: '/'})
+      reset()
       console.log('confirm')
     }
   }

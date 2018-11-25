@@ -1,47 +1,34 @@
 <template>
   <div>
-    <router-link to="/adddoc">Add doc</router-link>
+    <q-toolbar color="primary">
+      <q-toolbar-title>词频统计</q-toolbar-title>
+      <q-btn label="添加" icon="note-add" to="/adddoc" />
+      <q-btn label="合并" icon="call_merge" />
+      <q-input placeholder="在文档名中搜索" value="searchText" />
+      <q-btn label="导出" icon="launch" />
+    </q-toolbar>
     <h3>词频统计</h3>
-    <h4> Docx Content </h4>
-    <div> {{ docxContent }} </div>
-    <h4> Doc content </h4>
-    <div> {{ docContent }} </div>
-    <h4> PDF content </h4>
-    <div> {{ pdfContent }} </div>
-    {{ JSON.stringify(stats) }}
-    <pre>
-    {{ stats.wc.exportCSV() }}
-    </pre>
+    {{ filteredDocs.length }}
   </div>
 </template>
 
 <script>
-import textExtractor from '../lib/text-extractor'
-import textstats from '../lib/text-stats'
-
-let data = {
-  docxContent: '',
-  docContent: 'hi',
-  pdfContent: 'load of pdf'
-}
+// import store from 'src/store'
 
 export default {
-  data: () => data,
+//  store,
+  data: () => ({
+    searchText: ''
+  }),
   computed: {
-    stats: function () {
-      return textstats(this.pdfContent)
+    filteredDocs () {
+      let docs = this.$store.state.documents
+      console.log(docs.length)
+      return (this.searchText === '')
+        ? docs
+        : docs.filter((doc) => doc.name.indexOf(this.searchText) !== -1)
     }
   }
-}
-
-for (let typ of [ 'doc', 'docx', 'pdf' ]) {
-  textExtractor('/tmp/sample.' + typ, (err, txt) => {
-    if (err) {
-      console.log(err)
-    } else {
-      data[typ + 'Content'] = txt.substring(0, 400)
-    }
-  })
 }
 </script>
 <style>

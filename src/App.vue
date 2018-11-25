@@ -5,8 +5,14 @@
 </template>
 
 <script>
+import store from './store'
+
 export default {
-  name: 'App'
+  name: 'App',
+  store,
+  created () {
+    this.$store.dispatch('fetchDocument')
+  }
 }
 </script>
 
