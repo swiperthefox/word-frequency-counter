@@ -34,6 +34,7 @@
     "iconv-lite": "^0.4.24",
     "jszip": "^2.6.1",
     "jszip-utils": "0.0.2",
+    "md5-file": "^4.0.0",
     "nedb": "^1.8.0",
     "pdfjs-dist": "^2.0.943",
     "quasar-cli": "^0.17.0",

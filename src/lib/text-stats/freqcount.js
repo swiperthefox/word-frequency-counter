@@ -43,25 +43,63 @@ class WordFreqCounter {
     let counter = this.map.get(root)
     counter.addWord(word, wordOrign)
   }
-  exportCSV () {
-    let wordCounter = this.map
-    let result = []
-    let allWords = Array.from(wordCounter.values())
-    allWords.sort((item1, item2) => (item2.total - item1.total))
-    allWords.forEach((item) => {
-      let allsubwords = Array.from(item.counter)
-      allsubwords.sort((item1, item2) => (item2[1] - item1[1]))
-      let header = item.header || allsubwords[0][0]
-      let headerBody = (allsubwords.length > 1) ? '' : allsubwords[0][0]
-      result.push([header, headerBody, item.total])
-      if (allsubwords.length > 1) {
-        result.push(...(allsubwords.map(item => item.unshift(header) && item)))
+}
+
+export function exportCSV (wordCounter) {
+  let result = []
+
+  let allWords = Array.from(wordCounter.values())
+  allWords.sort((item1, item2) => (item2.total - item1.total))
+
+  allWords.forEach((item) => {
+    let allsubwords = Array.from(item.counter)
+    allsubwords.sort((item1, item2) => (item2[1] - item1[1]))
+
+    let header = item.header || allsubwords[0][0]
+    let headerBody = (allsubwords.length > 1) ? '' : allsubwords[0][0]
+
+    result.push([header, headerBody, item.total])
+    if (allsubwords.length > 1) {
+      let subWords = allsubwords.map(item => [header, item[0], item[1]])
+      result.push(...subWords)
+    }
+  })
+
+  return result
+}
+
+export function csvArrayToString (csvArray, showSub, showSum) {
+  let result
+  if (showSub && showSum) {
+    result = csvArray
+  } else if (showSub) {
+    result = []
+    csvArray.forEach(item => {
+      if (item[1] !== '') {
+        result.push([item[1], item[2]])
       }
     })
-    let csvHeader = '"单词原型","单词","次数"'
-    let csvString = result.map(item => `"${item[0]}","${item[1]}",${item[2]}`).join('\n')
-    return csvHeader + '\n' + csvString
+  } else if (showSum) {
+    result = []
+    let seen = new Set()
+    csvArray.forEach(item => {
+      if (!seen.has(item[0])) {
+        result.push([item[0], item[2]])
+        seen.add(item[0])
+      }
+    })
+  } else {
+    result = []
   }
+
+  let showBoth = showSub && showSum
+  let csvHeader = showBoth ? '"单词原型","单词","次数"' : '"单词","次数"'
+  let formatter = (showBoth
+    ? (item) => `"${item[0]}","${item[1]}",${item[2]}`
+    : (item) => `"${item[0]}",${item[1]}`
+  )
+  let csvStrings = result.map(formatter).join('\n')
+  return {count: result.length, string: csvHeader + '\n' + csvStrings}
 }
 
 export default function countWord (txt) {
@@ -69,7 +107,7 @@ export default function countWord (txt) {
   for (let word of allWords(txt)) {
     counter.addWord(word)
   }
-  return counter
+  return counter.map
 }
 
 function *allWords (txt) {

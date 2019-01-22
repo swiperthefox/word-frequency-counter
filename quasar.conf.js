@@ -25,8 +25,6 @@ module.exports = function (ctx) {
       // analyze: true,
       // extractCSS: false,
       extendWebpack (cfg) {
-        cfg.mode = 'development'
-        cfg.devtool = 'inline-sourcemap'
         cfg.module.rules.push({
           enforce: 'pre',
           test: /\.(js|vue)$/,
@@ -47,8 +45,15 @@ module.exports = function (ctx) {
             loader: 'raw-loader'
           }
         })
-        cfg.output = {
-          globalObject: 'this'
+        // the following config is needed to use pdfjs in dev mode, but it
+        // will cause a blank window in built app.
+        // Since now we know that pdfjs works now, these lines are not needed
+        // in dev mode.
+        if (ctx.dev) {
+          console.log('developing')
+          cfg.output = {
+            globalObject: 'this'
+          }
         }
         fs.writeFileSync('/tmp/webpack.cfg', JSON.stringify(cfg, null, 2))
       }
@@ -61,28 +66,40 @@ module.exports = function (ctx) {
     // framework: 'all' --- includes everything; for dev only!
     framework: {
       components: [
+        'QAlert',
         'QLayout',
         'QLayoutHeader',
         'QLayoutDrawer',
+        'QModal',
         'QPageContainer',
         'QPage',
         'QToolbar',
         'QToolbarTitle',
         'QBtn',
         'QIcon',
+        'QCheckbox',
         'QList',
         'QListHeader',
         'QItem',
         'QItemMain',
         'QItemSide',
-        'QInput'
+        'QInput',
+        'QField',
+        'QTable',
+        'QTr',
+        'QTd',
+        'QTh',
+        'QBtnDropdown',
+        'QSearch'
       ],
       directives: [
-        'Ripple'
+        'Ripple',
+        'CloseOverlay'
       ],
       // Quasar plugins
       plugins: [
-        'Notify'
+        'Notify',
+        'Dialog'
       ]
       // iconSet: ctx.theme.mat ? 'material-icons' : 'ionicons'
       // i18n: 'de' // Quasar language
@@ -138,6 +155,7 @@ module.exports = function (ctx) {
     electron: {
       bundler: 'builder', // or 'packager'
       extendWebpack (cfg) {
+        console.log('webpack target is: ', cfg.target)
         // do something with Electron process Webpack cfg
       },
       packager: {

@@ -1,14 +1,9 @@
 import MainPage from 'pages/Main.vue'
-import AddDocument from 'pages/AddDocument'
 
 const routes = [
   {
     path: '/',
     component: MainPage
-  },
-  {
-    path: '/adddoc',
-    component: AddDocument
   }
 ]
 

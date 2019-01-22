@@ -26,29 +26,32 @@ function stat (txt) {
 }
 
 let level2grade = new Map([
-  [1, {age: '5-6', grade: 'Kindergarten', gradecn: '幼儿园'}],
-  [2, {age: '6-7', grade: 'First/Second Grade', gradecn: '一/二年级'}],
-  [3, {age: '7-9', grade: 'Third Grade', gradecn: '三年级'}],
-  [4, {age: '9-10', grade: 'Fourth Grade', gradecn: '四年级'}],
-  [5, {age: '10-11', grade: 'Fifth Grade', gradecn: '五年级'}],
-  [6, {age: '11-12', grade: 'Sixth Grade', gradecn: '六年级'}],
-  [7, {age: '12-13', grade: 'Seventh Grade', gradecn: '七年级'}],
-  [8, {age: '13-14', grade: 'Eighth Grade', gradecn: '八年级'}],
-  [9, {age: '14-15', grade: 'Ninth Grade', gradecn: '九年级'}],
-  [10, {age: '15-16', grade: 'Tenth Grade', gradecn: '十年级'}],
-  [11, {age: '16-17', grade: 'Eleventh Grade', gradecn: '十一年级'}],
-  [12, {age: '17-18', grade: 'Twelfth grade', gradecn: '十二年级'}],
-  [13, {age: '18-24', grade: 'College student', gradecn: '大学生'}],
-  [14, {age: '24+', grade: 'Professor', gradecn: '教授'}]
+  [1, {age: '5-6', gradeen: 'Kindergarten', gradecn: '幼儿园', gradenum: 'Kindergarten'}],
+  [2, {age: '6-7', gradeen: 'First/Second Grade', gradecn: '一/二年级', gradenum: '1st/2nd Grade'}],
+  [3, {age: '7-9', gradeen: 'Third Grade', gradecn: '三年级', gradenum: '3rd Grade'}],
+  [4, {age: '9-10', gradeen: 'Fourth Grade', gradecn: '四年级', gradenum: '4th Grade'}],
+  [5, {age: '10-11', gradeen: 'Fifth Grade', gradecn: '五年级', gradenum: '5th Grade'}],
+  [6, {age: '11-12', gradeen: 'Sixth Grade', gradecn: '六年级', gradenum: '6th Grade'}],
+  [7, {age: '12-13', gradeen: 'Seventh Grade', gradecn: '七年级', gradenum: '7th Grade'}],
+  [8, {age: '13-14', gradeen: 'Eighth Grade', gradecn: '八年级', gradenum: '8th Grade'}],
+  [9, {age: '14-15', gradeen: 'Ninth Grade', gradecn: '九年级', gradenum: '9th Grade'}],
+  [10, {age: '15-16', gradeen: 'Tenth Grade', gradecn: '十年级', gradenum: '10th Grade'}],
+  [11, {age: '16-17', gradeen: 'Eleventh Grade', gradecn: '十一年级', gradenum: '11th Grade'}],
+  [12, {age: '17-18', gradeen: 'Twelfth Grade', gradecn: '十二年级', gradenum: '12th Grade'}],
+  [13, {age: '18-24', gradeen: 'College student', gradecn: '大学生', gradenum: 'College'}],
+  [14, {age: '24+', gradeen: 'Professor', gradecn: '教授', gradenum: 'Professor'}]
 ])
 
 export default function readingLevel (txt) {
   let stats = stat(txt)
   let level = Math.ceil(readability(stats))
   stats.level = (isNaN(level) ? 'N/A' : level)
-  let {age, grade} = level2grade.get(level) || {age: 'N/A', gradecn: 'N/A', grade: 'N/A'}
-  console.log(level, age, grade)
+  let {age, gradenum} = level2grade.get(level) || {age: '??', gradecn: '??', gradenum: '??'}
+  console.log(level, age, gradenum)
   stats.age = age
-  stats.grade = grade
+  if (gradenum.endsWith('Grade')) {
+    gradenum = gradenum.substring(0, gradenum.length - 6)
+  }
+  stats.grade = gradenum
   return stats
 }

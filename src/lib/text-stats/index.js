@@ -1,5 +1,8 @@
 import readingLevel from './readinglevel'
-import countWord from './freqcount'
+// import countWord from './freqcount'
+import countWord, { exportCSV, csvArrayToString } from './freqcount'
+
+export { exportCSV, csvArrayToString }
 
 let textStats = function textStats (text) {
   console.log('started word count at', new Date())

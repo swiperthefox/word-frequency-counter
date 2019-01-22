@@ -35,7 +35,11 @@ export default function extractFile (filename, cb) {
   ])
   let extension = filename.toLowerCase().split('.').pop()
   if (extractorMap.has(extension)) {
-    extractorMap.get(extension)(filename, cb)
+    try {
+      extractorMap.get(extension)(filename, cb)
+    } catch (err) {
+      cb(err)
+    }
   } else {
     cb(new Error('Unsupported file format.'))
   }

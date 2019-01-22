@@ -1,12 +1,7 @@
 import Nedb from 'nedb'
-import path from 'path'
-import Electron from 'electron'
 
 class DocDB {
-  constructor () {
-    let dbFolder = Electron.remote.app.getPath('appData')
-    let dbPath = path.join(dbFolder, 'wordfreq', 'word-freq-count.nedb')
-    console.log('using db at:', dbPath)
+  constructor (dbPath) {
     this.db = new Nedb({
       filename: dbPath,
       autoload: true
@@ -32,12 +27,27 @@ class DocDB {
         console.log('Failed to insert document')
         console.log(err)
       } else {
-        cb(null, [newDoc])
+        cb(null, newDoc)
       }
     })
   }
-  remove (doc, opt, cb) {
-    this.db.remove(doc, opt, cb)
+  remove (docId, opt, cb) {
+    this.db.remove({_id: docId}, opt, cb)
+  }
+  update (doc, cb) {
+    if (doc._id === undefined) {
+      this.insert(doc, cb)
+    } else {
+      this.db.update({_id: doc._id}, {name: doc.name, files: doc.files, _version: doc._version}
+        , {returnUpdatedDocs: true},
+        (err, n, affectedDoc, _) => {
+          if (err) {
+            cb(err)
+          } else if (n === 1) {
+            cb(null, affectedDoc)
+          }
+        })
+    }
   }
 }
 

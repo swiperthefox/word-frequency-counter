@@ -17,4 +17,7 @@ export default {
 </script>
 
 <style>
+#q-app {
+  overflow: auto;
+}
 </style>
