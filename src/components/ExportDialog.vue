@@ -1,35 +1,34 @@
 <template>
-  <q-modal  v-model = "showFlag" id="export-dialog" maximized @hide="close">
+  <q-modal  v-model="showFlag" id="export-dialog" maximized @hide="close">
     <q-field
       label="文档名称："
-      :label-width="3"
-      >
+      :label-width="3">
       <label> {{ document.name }} </label>
-      </q-field>
+    </q-field>
 
-      <q-field label="导出选项：" :label-width="3"
-        :error="!(showSum || showSub)"
-        error-label="至少要选择一项"
-      ><div>
-        <q-checkbox v-model ="showSum" :value="showSum" label="包含原生单词统计"/>
+    <q-field label="导出选项：" :label-width="3"
+      :error="!(showSum || showSub)"
+      error-label="至少要选择一项">
+      <div>
+        <q-checkbox v-model ="showSum" :value="showSum" label="包含单词原形统计"/>
         <q-checkbox v-model ="showSub" :value="showSub" label="包含派生单词统计"/>
-        </div>
-      </q-field>
-
-      <div class="row">
-        <div class="col-3 q-field-label">输出预览：</div>
-        <textarea v-model="csvString.string" readonly></textarea>
       </div>
+    </q-field>
 
-      <div class="button-bar row">
-        <label class="col-3 q-field-label">共计：</label>
-        <label>共 {{ csvString.count }} 行</label>
-      </div>
+    <div class="row">
+      <div class="col-3 q-field-label">输出预览：</div>
+      <textarea v-model="csvString.string" readonly></textarea>
+    </div>
 
-      <div class="row">
-        <q-btn label="导出" @click="save" color="primary"></q-btn>
-        <q-btn label="取消" @click="close"></q-btn>
-      </div>
+    <div class="button-bar row">
+      <label class="col-3 q-field-label">共计：</label>
+      <label>共 {{ csvString.count }} 个单词</label>
+    </div>
+
+    <div class="row">
+      <q-btn label="导出" @click="save" color="primary"></q-btn>
+      <q-btn label="取消" @click="close"></q-btn>
+    </div>
   </q-modal>
 </template>
 
@@ -74,8 +73,6 @@ export default {
       this.$emit('closeExportDialog')
     }
 
-  },
-  components: {
   }
 }
 
@@ -93,7 +90,7 @@ function selectCSVFile (defaultName) {
 
 </script>
 
-<style>
+<style scoped>
 #export-dialog .modal-container {
   width: 80%;
   font-size: 1.2rem;

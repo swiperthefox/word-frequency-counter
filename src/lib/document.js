@@ -1,7 +1,6 @@
 import md5Hash from 'md5-file'
 import path from 'path'
 import { statSync } from 'fs'
-
 import extractText from 'src/lib/text-extractor'
 
 function createDocuments (filenames, cb) {
@@ -57,11 +56,16 @@ function cloneDocument (document) {
     name: document.name,
     files: fileEntries,
     _version: (document._version || 0) + 1,
-    _id: document._id
+    _id: document._id,
+    createTime: document.createTime
   }
 }
 
-export { createDocuments, mergeDocument, cloneDocument }
+function compareDoc (a, b) {
+  return a.createTime < b.createTime
+}
+
+export { createDocuments, mergeDocument, cloneDocument, compareDoc }
 
 // helpers
 
@@ -69,6 +73,7 @@ function createDocument (name, files) {
   return {
     name,
     files,
-    _version: 0
+    _version: 0,
+    createTime: Date.now()
   }
 }

@@ -1,26 +1,24 @@
 <template>
   <q-modal id="doc-detail"  maximized v-model="showFlag" @hide="close">
       <q-field
-      label="文档名称："
-      :label-width="2"
-      :error="nameWarning.length > 0"
-      :error-label="nameWarning"
-      >
-      <q-input v-model="name" autofocus />
+        label="文档名称："
+        :label-width="2"
+        :error="nameWarning.length > 0"
+        :error-label="nameWarning">
+        <q-input v-model.trim="name" autofocus />
       </q-field>
 
       <q-field
-      label="包含文件："
-      :label-width="2"
-      :warning="fileWarning[0] === 'warning'"
-      :warning-label="fileWarning[1]"
-      :error="fileWarning[0] === 'negative'"
-      :error-label="fileWarning[1]"
-      >
+        label="包含文件："
+        :label-width="2"
+        :warning="fileWarning[0] === 'warning'"
+        :warning-label="fileWarning[1]"
+        :error="fileWarning[0] === 'negative'"
+        :error-label="fileWarning[1]">
         <div id="dd-file-list" v-for="fileEntry in document.files" :key="fileEntry.md5Hash">
           <q-checkbox v-model ="selected" :val="fileEntry"
           /> <span :class="{'cross-out': selected.indexOf(fileEntry) === -1}"
-          @click="current = fileEntry">{{ fileEntry.name }}</span>
+          @click="currentFileEntry = fileEntry">{{ fileEntry.name }}</span>
         </div>
       </q-field>
 
@@ -46,10 +44,10 @@ export default {
   name: 'DocumentDetail',
   data: () => ({
     selected: [],
-    current: null,
+    currentFileEntry: null,
     showFlag: true
   }),
-  props: ['document', 'show'],
+  props: ['document'],
   methods: {
     save: function () {
       this.document.files = this.selected
@@ -61,17 +59,14 @@ export default {
     }
   },
   computed: {
-    totalFiles: function () {
-      return this.document.files.length
-    },
     content: {
       get () {
-        return this.current ? this.current.content : ''
+        return this.currentFileEntry ? this.currentFileEntry.content : ''
       },
       set (text) {
-        if (this.current) {
-          this.current.content = text
-          this.current._lastmt = Date.now()
+        if (this.currentFileEntry) {
+          this.currentFileEntry.content = text
+          this.currentFileEntry._lastmt = Date.now()
         }
       }
     },
@@ -111,9 +106,9 @@ export default {
       handler: function (newDoc, oldDoc) {
         this.selected = this.document.files.slice(0)
         if (newDoc.files.length === 1) {
-          this.current = newDoc.files[0]
+          this.currentFileEntry = newDoc.files[0]
         } else {
-          this.current = null
+          this.currentFileEntry = null
         }
       }
     }
@@ -123,7 +118,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 li {
   list-style: none;
 }
@@ -131,8 +126,7 @@ li {
   text-decoration: line-through;
 }
 textarea {
-  height: 500px !important;
-  flex-grow: 1;
+  min-height: 500px !important;
 }
 
 #doc-detail .modal-container {

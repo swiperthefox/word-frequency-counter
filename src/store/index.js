@@ -4,6 +4,7 @@ import DocDB from './db'
 import textStats from 'src/lib/text-stats'
 import path from 'path'
 import Electron from 'electron'
+import {compareDoc} from 'src/lib/document'
 
 Vue.use(Vuex)
 
@@ -21,15 +22,14 @@ const db = new DocDB(path.join(config.dbDir, 'freq-counter.nedb'))
 const Store = new Vuex.Store({
   state: {
     documents: [],
-    selected: [],
-    modalDialog: ''
-
+    selected: []
   },
   getters: {
   },
   mutations: {
     addDocument (state, doc) {
       state.documents.push(doc)
+      state.documents.sort(compareDoc)
     },
     deleteSelected (state) {
       let selected = state.selected.splice(0)
@@ -53,18 +53,11 @@ const Store = new Vuex.Store({
       let i = 0
       while (i < docs.length && docs[i]._id !== doc._id) { i++ }
       docs.splice(i, 1, doc)
+      docs.sort(compareDoc)
     },
 
     updateSelected (state, selected) {
       state.selected = selected
-    },
-
-    toggleModalDialog (state, name) {
-      if (state.modalDialog === name) {
-        state.modalDialog = ''
-      } else if (state.modalDialog === '') {
-        state.modalDialog = name
-      }
     }
   },
   actions: {
@@ -88,18 +81,19 @@ const Store = new Vuex.Store({
             augmentDoc(doc)
             context.commit('addDocument', doc)
           })
+          docs.sort((a, b) => (a.createTime < b.createTime))
         }
       })
     },
+
     updateSelected (context, selected) {
       context.commit('updateSelected', selected)
     },
+
     deleteSelected (context) {
       context.commit('deleteSelected')
     },
-    closeModalDialog (context) {
-      context.commit('closeModalDialog')
-    },
+
     updateDocument (context, document) {
       db.update(document, (err, newDoc) => {
         if (err) {

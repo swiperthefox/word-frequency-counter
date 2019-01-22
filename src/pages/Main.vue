@@ -1,16 +1,16 @@
 <template>
   <q-layout>
     <q-toolbar color="primary">
-      <q-btn label="添加" icon="note-add" size="lg" @click="newDocument" />
-      <q-btn label="删除" icon="clear" size="lg" :disable="numberOfSelected === 0" @click="deleteDocument"
-      :title="deleteBtnHint"/>
-      <q-btn label="合并" icon="call_merge" size="lg"
-        :disable="numberOfSelected <= 1"
-        @click="mergeDocument" :title="mergeHint" />
-      <q-btn label="导出" icon="launch" :disable="numberOfSelected !== 1" size="lg"
-        @click="exportDocument" :title="exportHint"
-       />
-      <q-search :placeholder="searchPlaceholder" lower-case v-model="searchText" inverted clearable/>
+      <q-btn label="添加"  @click="newDocument"
+        icon="note-add" size="lg" />
+      <q-btn label="删除" @click="deleteDocument"
+        icon="clear" :disable="numberOfSelected === 0" size="lg" :title="deleteBtnHint"/>
+      <q-btn label="合并" @click="mergeDocument"
+        icon="call_merge" :disable="numberOfSelected <= 1" size="lg" :title="mergeHint" />
+      <q-btn label="导出" @click="exportDocument"
+        icon="launch" :disable="numberOfSelected !== 1" size="lg" :title="exportHint" />
+      <q-search  v-model="searchText" lower-case clearable
+        :placeholder="searchPlaceholder" inverted />
       <q-btn-dropdown  flat :label="searchTypeLabel" size="lg">
         <!-- dropdown content -->
           <q-list link>
@@ -21,25 +21,24 @@
                 <label label >搜索完整单词</label>
             </q-item>
           </q-list>
-        <div link>
-        </div>
       </q-btn-dropdown>
     </q-toolbar>
     <h4>词频统计</h4>
-    <document-table
-      v-if="filteredDocs.length > 0"
+    <document-table v-if="filteredDocs.length > 0"
       :documents="filteredDocs"
       @showDocumentDetail="showDocumentDetail"
-      />
-    <div v-else class="no-doc-info">
-      <q-icon name="info" color="primary" size="lg" />没有符合条件的文档。添加新的文档或者修改查询条件。
-    </div>
-    <document-detail :document="showDetailDoc" v-if="showDetailFlag" :show="showDetailFlag"
-    v-on:closeDocDetailDialog="closeDocDetailDialog" v-on:confirmDocDetailDialog="saveDocDetail"
-    v-on:doDeleteDocDetailDialog="deleteDocument"
     />
-    <export-dialog v-if="showExportDialog" :document="exportedDoc"
-    v-on:closeExportDialog="closeExportDialog" v-on:confirmExportDialog="saveExport"
+    <div v-else class="no-doc-info">
+      <q-icon name="info" color="primary" size="lg"/>没有符合条件的文档。添加新的文档或者修改查询条件。
+    </div>
+    <document-detail v-if="showDetailFlag"
+      :document="showDetailDoc"
+      v-on:closeDocDetailDialog="closeDocDetailDialog"
+      v-on:confirmDocDetailDialog="saveDocDetail"
+    />
+    <export-dialog v-if="showExportDialog"
+      :document="exportedDoc"
+      v-on:closeExportDialog="closeExportDialog"
     />
   </q-layout>
 </template>
@@ -56,11 +55,10 @@ export default {
   data: () => ({
     searchText: '',
     searchType: 'doc',
-    newDocName: '',
     showDetailDoc: null,
     showDetailFlag: false,
-    showExportDialog: false,
-    exportedDoc: null
+    exportedDoc: null,
+    showExportDialog: false
   }),
   computed: {
     filteredDocs () {
@@ -72,9 +70,6 @@ export default {
     },
     numberOfSelected: function () {
       return this.$store.state.selected.length
-    },
-    modalName: function () {
-      return this.$store.state.modal
     },
     exportHint: function () {
       if (this.numberOfSelected === 0) {
@@ -105,7 +100,7 @@ export default {
     },
 
     searchPlaceholder: function () {
-      return this.searchType === 'doc' ? '文档名片段' : '完整单词'
+      return this.searchType === 'doc' ? '文档名' : '完整单词'
     }
   },
   components: {
@@ -119,7 +114,12 @@ export default {
       let files = selectTextFiles()
       let cb = (err, doc) => {
         if (err) {
-          this.$store.dispatch('loadFailed', err)
+          this.$q.notify({
+            message: '读取文件“' + err + '”失败。请先把文件内容存入本程序支持的文件类型（.txt/.doc/.pdf），然后再添加。',
+            timeout: 0,
+            closeBtn: 'X',
+            type: 'info'
+          })
         } else {
           this.$store.dispatch('addDocument', doc)
         }
@@ -163,10 +163,6 @@ export default {
       })
     },
 
-    changeNewDocName (name) {
-      this.newDocName = name
-    },
-
     // export to csv
     exportDocument () {
       this.exportedDoc = this.$store.state.selected[0]
@@ -176,10 +172,6 @@ export default {
     closeExportDialog () {
       this.showExportDialog = false
       this.exportedDoc = null
-    },
-
-    saveExport (outputName) {
-      console.log('Saved to outputName')
     },
 
     // search
