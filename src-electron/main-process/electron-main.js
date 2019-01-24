@@ -1,4 +1,5 @@
-import { app, BrowserWindow } from 'electron'
+import { app, BrowserWindow, ipcMain } from 'electron'
+import { updaterInit, updaterCheck } from 'src/lib/updater'
 
 /**
  * Set `__statics` path to static files in production;
@@ -39,4 +40,12 @@ app.on('activate', () => {
   if (mainWindow === null) {
     createWindow()
   }
+})
+
+app.on('ready', updaterInit);
+
+ipcMain.on('check-update', function (event, arg) {
+  updaterCheck((msg) => {
+    event.returnValue = msg
+  })
 })

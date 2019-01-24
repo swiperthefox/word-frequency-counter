@@ -1,26 +1,37 @@
 <template>
   <q-layout>
     <q-toolbar color="primary">
-      <q-btn label="添加"  @click="newDocument"
-        icon="note-add" size="lg" />
-      <q-btn label="删除" @click="deleteDocument"
+      <q-btn flat label="添加"  @click="newDocument"
+        icon="add" size="lg" />
+      <q-btn flat label="删除" @click="deleteDocument"
         icon="clear" :disable="numberOfSelected === 0" size="lg" :title="deleteBtnHint"/>
-      <q-btn label="合并" @click="mergeDocument"
+      <q-btn flat label="合并" @click="mergeDocument"
         icon="call_merge" :disable="numberOfSelected <= 1" size="lg" :title="mergeHint" />
-      <q-btn label="导出" @click="exportDocument"
+      <q-btn flat label="导出" @click="exportDocument"
         icon="launch" :disable="numberOfSelected !== 1" size="lg" :title="exportHint" />
       <q-search  v-model="searchText" lower-case clearable
         :placeholder="searchPlaceholder" inverted />
-      <q-btn-dropdown  flat :label="searchTypeLabel" size="lg">
+      <q-btn-dropdown flat :label="searchTypeLabel" size="lg">
         <!-- dropdown content -->
           <q-list link>
             <q-item v-close-overlay @click.native="setSearchType('doc')">
-              <label label >搜索文档名</label>
+              <q-item-main>搜索文档名</q-item-main>
             </q-item>
             <q-item v-close-overlay @click.native="setSearchType('word')">
-                <label label >搜索完整单词</label>
+                <q-item-main>搜索完整单词</q-item-main>
             </q-item>
           </q-list>
+      </q-btn-dropdown>
+      <q-toolbar-title> </q-toolbar-title>
+      <q-btn-dropdown flat icon="menu" id="more-menu" size="lg">
+        <q-list link>
+          <q-item link v-close-overlay @click.native="openSettingDialog">
+            <q-item-main><q-icon name="settings"/>设置</q-item-main>
+          </q-item>
+          <q-item v-close-overlay @click.native="checkUpdate">
+            <q-item-main><q-icon name="settings"/>更新</q-item-main>
+          </q-item>
+        </q-list>
       </q-btn-dropdown>
     </q-toolbar>
     <h4>词频统计</h4>
@@ -49,6 +60,7 @@ import { mergeDocument, createDocuments, cloneDocument } from 'src/lib/document'
 import store from 'src/store'
 import DocumentDetail from 'src/components/DocumentDetail'
 import ExportDialog from 'src/components/ExportDialog'
+const { ipcRenderer } = require('electron')
 
 export default {
   store,
@@ -185,6 +197,53 @@ export default {
       } else {
         return doc.stats.wc.has(searchText)
       }
+    },
+
+    openSettingDialog () {
+      console.log('Nothing to config yet.')
+    },
+
+    checkUpdate () {
+      console.log('going to check update.')
+      let {success, msg} = ipcRenderer.sendSync('check-update')
+      this.$q.notify({
+        message: msg,
+        timeout: 0,
+        type: 'positive',
+
+  color: 'positive',
+  textColor: 'black', // if default 'white' doesn't fit
+
+  icon: 'wifi',
+  // or
+  avatar: 'statics/boy-avatar.png',
+
+  detail: 'Optional detail message.',
+  position: 'top-right', // 'top', 'left', 'bottom-left' etc.
+
+  closeBtn: true, // or string as button message e.g. 'dismiss'
+
+  actions: [
+    {
+      label: 'Snooze',
+      icon: 'timer', // optional
+      noDismiss: true, // optional, v0.15.11+
+      handler: () => {
+        console.log('acting')
+      }
+    },
+    {
+      label: 'Dismiss',
+      handler: () => {
+        console.log('dismissed')
+      }
+    }
+  ],
+
+  onDismiss () { // v0.15.11+
+    //...
+  }
+})
     }
   }
 }
@@ -216,5 +275,11 @@ h4 {
 }
 .q-btn-dropdown {
   font-size: 110% !important;
+}
+#more-menu .q-btn-dropdown-arrow {
+  display: none;
+}
+#more-menu .on-right {
+  display: none;
 }
 </style>
