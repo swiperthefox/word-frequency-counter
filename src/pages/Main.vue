@@ -181,7 +181,7 @@ export default {
 
     match (doc, searchText, searchType) {
       if (searchType === 'doc') {
-        return doc.name.indexOf(searchText) !== -1
+        return doc.name.toLowerCase().indexOf(searchText) !== -1
       } else {
         return doc.stats.wc.has(searchText)
       }
@@ -213,5 +213,8 @@ h4 {
   font-size: 120%;
   width: 80%;
   margin: auto;
+}
+.q-btn-dropdown {
+  font-size: 110% !important;
 }
 </style>
