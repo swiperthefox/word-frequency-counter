@@ -15,18 +15,18 @@
       </div>
     </q-field>
 
-    <div class="row">
+    <div class="row q-field">
       <div class="col-3 q-field-label">输出预览：</div>
       <textarea v-model="csvString.string" readonly></textarea>
     </div>
 
-    <div class="button-bar row">
+    <div class="button-bar row q-field">
       <label class="col-3 q-field-label">共计：</label>
       <label>共 {{ csvString.count }} 个单词</label>
     </div>
 
     <div class="row">
-      <q-btn label="导出" @click="save" color="primary"></q-btn>
+      <q-btn label="导出" @click="save" color="primary" :disabled="inValid"></q-btn>
       <q-btn label="取消" @click="close"></q-btn>
     </div>
   </q-modal>
@@ -54,6 +54,9 @@ export default {
     },
     csvString: function () {
       return csvArrayToString(this.csvItems, this.showSub, this.showSum)
+    },
+    inValid: function () {
+      return !(this.showSum || this.showSub)
     }
   },
 
@@ -96,13 +99,14 @@ function selectCSVFile (defaultName) {
   font-size: 1.2rem;
 }
 .q-field {
-  margin: 10px 0px;
-}
-.q-field-label {
-  font-weight: bold;
+  margin: 10px;
 }
 
+.q-btn {
+  margin: 5px 15px;
+}
 textarea {
-  flex-grow: 1
+  flex-grow: 1;
+  min-height: 500px;
 }
 </style>

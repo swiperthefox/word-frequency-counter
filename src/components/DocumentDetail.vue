@@ -22,7 +22,7 @@
         </div>
       </q-field>
 
-      <div class="row">
+      <div class="row q-field">
         <div class="col-2">
           <label class="q-field-label">文件内容：</label>
           <div class="text-small"><q-icon class="text-primary" name="info"/>点击文件名称，可以查看、编辑文件内容。</div>
@@ -127,6 +127,8 @@ li {
 }
 textarea {
   min-height: 500px !important;
+  flex-grow: 1;
+  margin-right: 10px;
 }
 
 #doc-detail .modal-container {
@@ -143,9 +145,7 @@ textarea {
 .q-field {
   margin: 10px 10px;
 }
-.q-field-label {
-  margin-left: 10px !important;
-}
+
 .button-bar {
   margin: 20px 0px;
 }

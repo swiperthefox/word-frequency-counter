@@ -25,9 +25,9 @@
       <q-toolbar-title> </q-toolbar-title>
       <q-btn-dropdown flat icon="menu" id="more-menu" size="lg">
         <q-list link>
-          <q-item link v-close-overlay @click.native="openSettingDialog">
+          <!-- <q-item link v-close-overlay @click.native="openSettingDialog">
             <q-item-main><q-icon name="settings"/>设置</q-item-main>
-          </q-item>
+          </q-item> -->
           <q-item v-close-overlay @click.native="checkUpdate">
             <q-item-main><q-icon name="settings"/>更新</q-item-main>
           </q-item>
@@ -60,7 +60,6 @@ import { mergeDocument, createDocuments, cloneDocument } from 'src/lib/document'
 import store from 'src/store'
 import DocumentDetail from 'src/components/DocumentDetail'
 import ExportDialog from 'src/components/ExportDialog'
-const { ipcRenderer } = require('electron')
 
 export default {
   store,
@@ -76,9 +75,14 @@ export default {
     filteredDocs () {
       let docs = this.$store.state.documents
       console.log(docs.length)
-      return (this.searchText === '')
-        ? docs
-        : docs.filter((doc) => this.match(doc, this.searchText, this.searchType))
+      let filtered = docs
+      if (this.searchText !== '') {
+        filtered = docs.filter((doc) => this.match(doc, this.searchText, this.searchType))
+      }
+      if (docs.length !== filtered.length) {
+        this.$store.dispatch('updateSelected', [])
+      }
+      return filtered
     },
     numberOfSelected: function () {
       return this.$store.state.selected.length
@@ -199,51 +203,38 @@ export default {
       }
     },
 
-    openSettingDialog () {
-      console.log('Nothing to config yet.')
-    },
+    // openSettingDialog () {
+    //   console.log('Nothing to config yet.')
+    // },
 
     checkUpdate () {
       console.log('going to check update.')
-      let {success, msg} = ipcRenderer.sendSync('check-update')
       this.$q.notify({
-        message: msg,
-        timeout: 0,
-        type: 'positive',
-
-  color: 'positive',
-  textColor: 'black', // if default 'white' doesn't fit
-
-  icon: 'wifi',
-  // or
-  avatar: 'statics/boy-avatar.png',
-
-  detail: 'Optional detail message.',
-  position: 'top-right', // 'top', 'left', 'bottom-left' etc.
-
-  closeBtn: true, // or string as button message e.g. 'dismiss'
-
-  actions: [
-    {
-      label: 'Snooze',
-      icon: 'timer', // optional
-      noDismiss: true, // optional, v0.15.11+
-      handler: () => {
-        console.log('acting')
-      }
-    },
-    {
-      label: 'Dismiss',
-      handler: () => {
-        console.log('dismissed')
-      }
-    }
-  ],
-
-  onDismiss () { // v0.15.11+
-    //...
-  }
-})
+        message: '检查更新还未实现。'
+      })
+      // let {success, msg} = ipcRenderer.sendSync('check-update')
+      // this.$q.notify({
+      //   message: msg,
+      //   timeout: 0,
+      //   type: success ? 'positive' : 'negative',
+      //   position: 'top',
+      //   actions: [
+      //     {
+      //       label: '重启程序',
+      //       icon: 'power_settings_new', // optional
+      //       noDismiss: true, // optional, v0.15.11+
+      //       handler: () => {
+      //         console.log('restart')
+      //       }
+      //     },
+      //     {
+      //       label: 'Dismiss',
+      //       handler: () => {
+      //         console.log('dismissed')
+      //       }
+      //     }
+      //   ]
+      // })
     }
   }
 }
@@ -267,6 +258,15 @@ h4 {
 }
 .modal-message {
   white-space: pre-line;
+  font-size: 120%;
+  color: black;
+}
+
+.modal-header:before {
+    content: "⛔";
+    font-size: 120%;
+    color: #f2470f;
+    margin: 10px;
 }
 .no-doc-info {
   font-size: 120%;
@@ -281,5 +281,10 @@ h4 {
 }
 #more-menu .on-right {
   display: none;
+}
+
+.q-field-label {
+  font-weight: bold;
+  color: #777777;
 }
 </style>
