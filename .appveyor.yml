@@ -15,6 +15,6 @@ build_script:
   - npm run win32
 
 after_build:
-  - ps: ls dist\electron-mat\*
+  - ps: ls dist\electron-mat\Packaged\*
 
 test: off
