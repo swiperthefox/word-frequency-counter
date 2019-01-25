@@ -93,7 +93,7 @@ module.exports = function (ctx) {
         'QSearch'
       ],
       directives: [
-        'Ripple',
+        // 'Ripple',
         'CloseOverlay'
       ],
       // Quasar plugins
@@ -172,8 +172,14 @@ module.exports = function (ctx) {
       },
       builder: {
         // https://www.electron.build/configuration/configuration
-
-        appId: '词频统计'
+        'copyright': 'Copyright © 2019 Zhenlei Jia',
+        'productName': '词频统计',
+        'asar': true,
+        appId: 'com.gmail.zhenlei.jia.word.freq.counter',
+        'win': {
+          'legalTrademarks': 'Copyright © 2019 Zhenlei Jia',
+          'publisherName': 'Zhenlei Jia'
+        }
       }
     }
   }

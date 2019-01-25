@@ -62,12 +62,12 @@ export default {
 
   methods: {
     save: function () {
-      let name = selectCSVFile(this.document.name)
+      let name = selectCSVFile(this.document.name + '.csv')
       if (name) {
         if (!name.endsWith('.csv')) {
           name = name + '.csv'
         }
-        writeFileSync(name, this.csvString)
+        writeFileSync(name, this.csvString.string)
         this.close()
       }
     },
