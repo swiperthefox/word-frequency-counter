@@ -1,3 +1,5 @@
+image: Visual Studio 2017
+
 platform:
   - x64
 
@@ -7,10 +9,10 @@ cache:
   - '%USERPROFILE%\.electron'
 
 install:
-  - ps: Install-Product node 7 x64
+  - ps: Install-Product node 8 x64
   - npm install
 
 build_script:
-  - quasar build -m electron win32 -t mat -b builder
+  - npm run win32
 
 test: off
