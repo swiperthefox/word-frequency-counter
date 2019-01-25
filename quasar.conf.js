@@ -173,7 +173,7 @@ module.exports = function (ctx) {
       builder: {
         // https://www.electron.build/configuration/configuration
         'copyright': 'Copyright © 2019 Zhenlei Jia',
-        'productName': '词频统计',
+        'productName': 'Word Frequency',
         'asar': true,
         appId: 'com.gmail.zhenlei.jia.word.freq.counter',
         'win': {
