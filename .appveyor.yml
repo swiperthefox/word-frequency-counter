@@ -6,7 +6,6 @@ platform:
 cache:
   - node_modules
   - '%APPDATA%\npm-cache'
-  - '%USERPROFILE%\.electron'
 
 install:
   - ps: Install-Product node 8 x64
@@ -14,5 +13,8 @@ install:
 
 build_script:
   - npm run win32
+
+after_build:
+  - ps: ls dist\electron-mat\*
 
 test: off
