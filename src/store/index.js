@@ -43,6 +43,7 @@ const Store = new Vuex.Store({
               if (idx !== -1) {
                 state.documents.splice(idx, 1)
               }
+              console.log('number of docs: ', state.documents.length)
             }
           }
         )

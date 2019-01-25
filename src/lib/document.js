@@ -1,6 +1,7 @@
 import md5Hash from 'md5-file'
 import { statSync } from 'fs'
 import extractText from 'src/lib/text-extractor'
+import { basename } from 'path'
 
 function createDocuments (filenames, cb) {
   let goodFiles = []
@@ -22,8 +23,12 @@ function createDocuments (filenames, cb) {
         goodFiles.push(fileEntry)
       }
       if (goodFiles.length + failedFiles.length === filenames.length) {
-        let doc = createDocument('', goodFiles)
-        cb(null, doc)
+        if (goodFiles.length > 0) {
+          let first = goodFiles[0]
+          let docName = basename(first.name)
+          let doc = createDocument(docName, goodFiles)
+          cb(null, doc)
+        }
       }
     })
   })
