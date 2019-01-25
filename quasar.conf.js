@@ -55,7 +55,7 @@ module.exports = function (ctx) {
             globalObject: 'this'
           }
         }
-        fs.writeFileSync('/tmp/webpack.cfg', JSON.stringify(cfg, null, 2))
+        // fs.writeFileSync('/tmp/webpack.cfg', JSON.stringify(cfg, null, 2))
       }
     },
     devServer: {
