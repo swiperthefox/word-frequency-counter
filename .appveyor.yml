@@ -17,13 +17,17 @@ build_script:
 after_build:
   - ps: ls dist\electron-mat\Packaged\*
 
+artifacts:
+  - path: dist/electron-mat/Packaged/*exe
+    name: WordFreq
+
 deploy:
   release: wordfreq-v$(appveyor_build_version)
   description: '第一版'
   provider: GitHub
   auth_token:
     secure: 8TyPdI8JenHl/cXkEPYiuAY+4Arb8bsp+pJ6kkCAljhrTcXaJe3HH+JPrMSFyqrl
-  artifact: dist/electron-mat/Packaged/*exe
+  artifact: WordFreq
   draft: false
   prerelease: false
   on:
