@@ -33,6 +33,7 @@
     "eslint-plugin-standard": "^3.0.1",
     "eslint-plugin-vue": "^4.3.0",
     "iconv-lite": "^0.4.24",
+    "intro.js": "^2.9.3",
     "jszip": "^2.6.1",
     "jszip-utils": "0.0.2",
     "md5-file": "^4.0.0",

@@ -131,13 +131,14 @@ export default {
       let cb = (err, doc) => {
         if (err) {
           this.$q.notify({
-            message: '读取文件“' + err + '”失败。请先把文件内容存入本程序支持的文件类型（.txt/.doc/.pdf），然后再添加。',
+            message: '读取文件“' + doc + '”失败。请先把文件内容存入本程序支持的文件类型（.txt/.doc/.pdf），然后再添加。',
             timeout: 0,
             closeBtn: 'X',
             type: 'info'
           })
         } else {
-          this.$store.dispatch('addDocument', doc)
+          this.showDocumentDetail(doc)
+          // this.$store.dispatch('addDocument', doc)
         }
       }
       if (files) {
@@ -202,7 +203,6 @@ export default {
         return doc.stats.wc.has(searchText)
       }
     },
-
     // openSettingDialog () {
     //   console.log('Nothing to config yet.')
     // },
@@ -210,7 +210,8 @@ export default {
     checkUpdate () {
       console.log('going to check update.')
       this.$q.notify({
-        message: '检查更新还未实现。'
+        message: '检查更新还未实现。',
+        timeout: 3000
       })
       // let {success, msg} = ipcRenderer.sendSync('check-update')
       // this.$q.notify({

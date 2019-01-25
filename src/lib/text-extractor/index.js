@@ -33,6 +33,7 @@ export default function extractFile (filename, cb) {
     ['docx', docxToText],
     ['txt', txtReader]
   ])
+  console.log('reading file: ' + filename)
   let extension = filename.toLowerCase().split('.').pop()
   if (extractorMap.has(extension)) {
     try {

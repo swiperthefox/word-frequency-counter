@@ -80,6 +80,9 @@ tr:first-child:hover {
 td {
   text-align: center;
 }
+td a {
+  cursor: pointer;
+}
 th>label, td>label {
   width: 100%;
   height: 100%;

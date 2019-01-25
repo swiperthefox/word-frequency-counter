@@ -38,8 +38,7 @@ class DocDB {
     if (doc._id === undefined) {
       this.insert(doc, cb)
     } else {
-      this.db.update({_id: doc._id}, {name: doc.name, files: doc.files, _version: doc._version}
-        , {returnUpdatedDocs: true},
+      this.db.update({_id: doc._id}, doc, {returnUpdatedDocs: true},
         (err, n, affectedDoc, _) => {
           if (err) {
             cb(err)

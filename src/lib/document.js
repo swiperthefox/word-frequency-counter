@@ -1,13 +1,16 @@
 import md5Hash from 'md5-file'
-import path from 'path'
 import { statSync } from 'fs'
 import extractText from 'src/lib/text-extractor'
 
 function createDocuments (filenames, cb) {
+  let goodFiles = []
+  let failedFiles = []
+
   filenames.forEach((filename) => {
     extractText(filename, (err, txt) => {
       if (err) {
-        cb(filename)
+        failedFiles.push([filename, err])
+        cb(err, filename)
       } else {
         let lastmtime = statSync(filename).mtimeMs
         let fileEntry = {
@@ -16,11 +19,10 @@ function createDocuments (filenames, cb) {
           content: txt,
           _lastmt: lastmtime
         }
-
-        let doc = createDocument(
-          path.parse(filename).name,
-          [fileEntry]
-        )
+        goodFiles.push(fileEntry)
+      }
+      if (goodFiles.length + failedFiles.length === filenames.length) {
+        let doc = createDocument('', goodFiles)
         cb(null, doc)
       }
     })
