@@ -60,6 +60,7 @@ import { mergeDocument, createDocuments, cloneDocument } from 'src/lib/document'
 import store from 'src/store'
 import DocumentDetail from 'src/components/DocumentDetail'
 import ExportDialog from 'src/components/ExportDialog'
+import tryUpdate from 'src/lib/updater.js'
 
 export default {
   store,
@@ -209,34 +210,33 @@ export default {
 
     checkUpdate () {
       console.log('going to check update.')
-      this.$q.notify({
-        message: '检查更新还未实现。',
-        timeout: 3000
+      this.$q.loadingBar.start()
+      tryUpdate((err, result) => {
+        if (err) {
+          this.$q.loadingBar.stop()
+          this.$q.notify({
+            message: err.message,
+            timeout: 3000,
+            type: 'negative'
+          })
+        } else {
+          if (result.type === 'progress') {
+            this.$q.loadingBar.increment(result.data)
+            // this.$q.notify({
+            //   message: result,
+            //  timeout: 2000
+            // })
+          } else {
+            this.$q.loadingBar.stop()
+            this.$q.notify({
+              message: '应用已经更新，请重新启动。',
+              timeout: 0
+            })
+          }
+        }
       })
-      // let {success, msg} = ipcRenderer.sendSync('check-update')
-      // this.$q.notify({
-      //   message: msg,
-      //   timeout: 0,
-      //   type: success ? 'positive' : 'negative',
-      //   position: 'top',
-      //   actions: [
-      //     {
-      //       label: '重启程序',
-      //       icon: 'power_settings_new', // optional
-      //       noDismiss: true, // optional, v0.15.11+
-      //       handler: () => {
-      //         console.log('restart')
-      //       }
-      //     },
-      //     {
-      //       label: 'Dismiss',
-      //       handler: () => {
-      //         console.log('dismissed')
-      //       }
-      //     }
-      //   ]
-      // })
     }
+
   }
 }
 

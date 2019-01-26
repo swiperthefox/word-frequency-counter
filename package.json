@@ -1,6 +1,6 @@
 {
   "name": "word-freq-counter",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "A tool to count the frequency of reading materials.",
   "productName": "词频统计",
   "cordovaId": "org.cordova.quasar.app",
