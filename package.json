@@ -33,6 +33,7 @@
     "eslint-plugin-promise": "^3.7.0",
     "eslint-plugin-standard": "^3.0.1",
     "eslint-plugin-vue": "^4.3.0",
+    "httpreq": "^0.4.24",
     "iconv-lite": "^0.4.24",
     "intro.js": "^2.9.3",
     "jszip": "^2.6.1",
