@@ -31,10 +31,6 @@
           <q-item v-close-overlay @click.native="checkUpdate">
             <q-item-main><q-icon name="settings"/>更新</q-item-main>
           </q-item>
-          <q-item v-close-overlay @click.native="opendev">
-            <q-item-main><q-icon name="settings"/>dev</q-item-main>
-          </q-item>
-
         </q-list>
       </q-btn-dropdown>
     </q-toolbar>
@@ -66,6 +62,7 @@ import ExportDialog from 'src/components/ExportDialog'
 import tryUpdate from 'src/lib/updater.js'
 import { remote } from 'electron'
 import os from 'os'
+import path from 'path'
 
 export default {
   store,
@@ -240,12 +237,13 @@ export default {
                   handler: () => {
                     let update
                     let ostype = os.type()
+                    let execDir = path.dirname(remote.app.getPath('exe'))
                     if (ostype === 'Window_NT') {
                       update = 'update.bat'
                     } else {
                       update = 'update'
                     }
-                    remote.app.relaunch({execPath: update})
+                    remote.app.relaunch({execPath: path.join(execDir, update)})
                     remote.app.exit(0)
                     console.log('restarting')
                   }

@@ -179,7 +179,9 @@ module.exports = function (ctx) {
         'asar': true,
         appId: 'com.gmail.zhenlei.jia.word.freq.counter',
         'win': {
-          'target': 'zip',
+          'target': 'nsis',
+          'icon': 'build/wordcloud_3.ico',
+          'oneClick': false,
           'legalTrademarks': 'Copyright © 2019 Zhenlei Jia',
           'publisherName': 'Zhenlei Jia',
           'extraFiles': [
@@ -187,6 +189,14 @@ module.exports = function (ctx) {
           ]
         },
         'linux': {
+          'executableName': '词频',
+          'icon': 'build/linux-512x512.png',
+          'target': 'zip',
+          'extraFiles': [
+            'update'
+          ]
+        },
+        'mac': {
           'target': 'zip',
           'extraFiles': [
             'update'
