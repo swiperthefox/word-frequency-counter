@@ -20,6 +20,8 @@ after_build:
 artifacts:
   - path: dist/electron-mat/Packaged/*exe
     name: WordFreq
+  - path: dist/electron-mat/UnPackaged/resources/app.asar
+    name: asar
 
 deploy:
   release: wordfreq-v$(appveyor_build_version)
@@ -27,7 +29,7 @@ deploy:
   provider: GitHub
   auth_token:
     secure: 8TyPdI8JenHl/cXkEPYiuAY+4Arb8bsp+pJ6kkCAljhrTcXaJe3HH+JPrMSFyqrl
-  artifact: WordFreq
+  artifact: asar
   draft: false
   prerelease: false
   on:

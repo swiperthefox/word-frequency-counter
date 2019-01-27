@@ -31,6 +31,10 @@
           <q-item v-close-overlay @click.native="checkUpdate">
             <q-item-main><q-icon name="settings"/>更新</q-item-main>
           </q-item>
+          <q-item v-close-overlay @click.native="opendev">
+            <q-item-main><q-icon name="settings"/>dev</q-item-main>
+          </q-item>
+
         </q-list>
       </q-btn-dropdown>
     </q-toolbar>
@@ -40,7 +44,6 @@
       @showDocumentDetail="showDocumentDetail"
     />
     <div v-else class="no-doc-info">
-      <q-icon name="info" color="primary" size="lg"/>没有符合条件的文档。添加新的文档或者修改查询条件。
     </div>
     <document-detail v-if="showDetailFlag"
       :document="showDetailDoc"
@@ -61,6 +64,8 @@ import store from 'src/store'
 import DocumentDetail from 'src/components/DocumentDetail'
 import ExportDialog from 'src/components/ExportDialog'
 import tryUpdate from 'src/lib/updater.js'
+import { remote } from 'electron'
+import os from 'os'
 
 export default {
   store,
@@ -222,19 +227,37 @@ export default {
         } else {
           if (result.type === 'progress') {
             this.$q.loadingBar.increment(result.data)
-            // this.$q.notify({
-            //   message: result,
-            //  timeout: 2000
-            // })
           } else {
             this.$q.loadingBar.stop()
             this.$q.notify({
-              message: '应用已经更新，请重新启动。',
-              timeout: 0
+              message: '应用已准备好更新，请重新启动程序。',
+              timeout: 0,
+              actions: [
+                {
+                  label: '重启',
+                  icon: 'replay', // optional
+                  noDismiss: true, // optional, v0.15.11+
+                  handler: () => {
+                    let update
+                    let ostype = os.type()
+                    if (ostype === 'Window_NT') {
+                      update = 'update.bat'
+                    } else {
+                      update = 'update'
+                    }
+                    remote.app.relaunch({execPath: update})
+                    remote.app.exit(0)
+                    console.log('restarting')
+                  }
+                }
+              ]
             })
           }
         }
       })
+    },
+    opendev () {
+      window.openDevTool()
     }
 
   }

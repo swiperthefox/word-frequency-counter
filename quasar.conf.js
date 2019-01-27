@@ -156,6 +156,7 @@ module.exports = function (ctx) {
     electron: {
       bundler: 'builder', // or 'packager'
       extendWebpack (cfg) {
+        cfg.mode = 'development'
         console.log('webpack target is: ', cfg.target)
         // do something with Electron process Webpack cfg
       },
@@ -174,12 +175,22 @@ module.exports = function (ctx) {
       builder: {
         // https://www.electron.build/configuration/configuration
         'copyright': 'Copyright © 2019 Zhenlei Jia',
-        'productName': 'Word Frequency',
+        'productName': '词频',
         'asar': true,
         appId: 'com.gmail.zhenlei.jia.word.freq.counter',
         'win': {
+          'target': 'zip',
           'legalTrademarks': 'Copyright © 2019 Zhenlei Jia',
-          'publisherName': 'Zhenlei Jia'
+          'publisherName': 'Zhenlei Jia',
+          'extraFiles': [
+            'update.bat'
+          ]
+        },
+        'linux': {
+          'target': 'zip',
+          'extraFiles': [
+            'update'
+          ]
         }
       }
     }
