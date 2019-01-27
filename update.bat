@@ -1,2 +1,2 @@
-rename resources\temp_app resources\app.asar
+move resources\temp_app resources\app.asar
 start "" "wordcount"

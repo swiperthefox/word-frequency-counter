@@ -1,6 +1,4 @@
 // Configuration for your app
-const fs = require('fs')
-
 module.exports = function (ctx) {
   return {
     // app plugins (/src/plugins)
@@ -180,7 +178,7 @@ module.exports = function (ctx) {
         appId: 'com.gmail.zhenlei.jia.word.freq.counter',
         'win': {
           'target': 'nsis',
-          'icon': 'build/wordcloud_3.ico',
+          'icon': 'build/wordcloud_2.ico',
           'legalTrademarks': 'Copyright © 2019 Zhenlei Jia',
           'publisherName': 'Zhenlei Jia',
           'extraFiles': [
@@ -189,8 +187,8 @@ module.exports = function (ctx) {
         },
         'linux': {
           'executableName': 'wordcount',
-          'icon': 'build/linux-512x512.png',
-          'target': 'zip',
+          'icon': 'build/wordcloud-circle-512x512.png',
+          'target': 'dir',
           'extraFiles': [
             'update'
           ]

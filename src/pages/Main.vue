@@ -29,7 +29,7 @@
             <q-item-main><q-icon name="settings"/>设置</q-item-main>
           </q-item> -->
           <q-item v-close-overlay @click.native="checkUpdate">
-            <q-item-main><q-icon name="settings"/>更新</q-item-main>
+            <q-item-main><q-icon name="update"/>更新</q-item-main>
           </q-item>
         </q-list>
       </q-btn-dropdown>
@@ -238,7 +238,7 @@ export default {
                     let update
                     let ostype = os.type()
                     let execDir = path.dirname(remote.app.getPath('exe'))
-                    if (ostype === 'Window_NT') {
+                    if (ostype.toLowerCase().startsWith('window')) {
                       update = 'update.bat'
                     } else {
                       update = 'update'
