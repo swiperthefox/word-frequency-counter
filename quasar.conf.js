@@ -175,13 +175,12 @@ module.exports = function (ctx) {
       builder: {
         // https://www.electron.build/configuration/configuration
         'copyright': 'Copyright © 2019 Zhenlei Jia',
-        'productName': '词频',
+        'productName': 'wordcount',
         'asar': true,
         appId: 'com.gmail.zhenlei.jia.word.freq.counter',
         'win': {
           'target': 'nsis',
           'icon': 'build/wordcloud_3.ico',
-          'oneClick': false,
           'legalTrademarks': 'Copyright © 2019 Zhenlei Jia',
           'publisherName': 'Zhenlei Jia',
           'extraFiles': [
@@ -189,7 +188,7 @@ module.exports = function (ctx) {
           ]
         },
         'linux': {
-          'executableName': '词频',
+          'executableName': 'wordcount',
           'icon': 'build/linux-512x512.png',
           'target': 'zip',
           'extraFiles': [
@@ -201,6 +200,10 @@ module.exports = function (ctx) {
           'extraFiles': [
             'update'
           ]
+        },
+        'nsis': {
+          'oneClick': false,
+          'shortcutName': '词频'
         }
       }
     }

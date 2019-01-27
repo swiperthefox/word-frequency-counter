@@ -1,9 +1,9 @@
 #! /bin/bash
 if [[ "$OSTYPE" == "linux-gnu" ]]; then
   mv resources/temp_app resources/app.asar
-  ./词频
+  ./wordcount
 elif [[ "$OSTYPE" == "darwin"* ]]; then
   # current dir is contents/MacOS
   mv ../Resources/temp_app ../Resources/app.asar
-  ./词频
+  ./wordcount
 fi
